@@ -13,3 +13,4 @@ createRoot(document.getElementById('root')).render(
 // In the real product this is what the embeddable library injects; here it is wired
 // directly so the demo is self-contained.
 mountSelector()
+// ci gate proof 80e70ad
