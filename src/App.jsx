@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { AUTH_LABEL } from './auth/login-widget.jsx'
 
-const HEADLINE = 'Welcome to the store v0'
+const HEADLINE = 'Welcome! Grand opening Sat July 18! v3'
 const BASE = 'http://localhost:8788'
 
 export default function App() {
