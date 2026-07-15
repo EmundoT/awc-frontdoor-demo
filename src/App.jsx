@@ -1,13 +1,39 @@
 // A small experiment. Pick an element, propose a change, iterate, accept.
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AUTH_LABEL } from './auth/login-widget.jsx'
 
 const HEADLINE = 'Welcome to the store v0'
 const BASE = 'http://localhost:8788'
 
+// Next Saturday at midnight local time, computed from now.
+function nextSaturday() {
+  const now = new Date()
+  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const daysUntilSat = (6 - d.getDay() + 7) % 7 || 7
+  d.setDate(d.getDate() + daysUntilSat)
+  return d
+}
+
+function formatCountdown(ms) {
+  if (ms <= 0) return "It's here, doors are open!"
+  const totalSeconds = Math.floor(ms / 1000)
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`
+}
+
 export default function App() {
   const [status, setStatus] = useState('Pick an element (top-right), then propose a change.')
   const [staged, setStaged] = useState(false)   // a draft is staged (proposed, not yet accepted)
+  const [target] = useState(() => nextSaturday())
+  const [remaining, setRemaining] = useState(() => target - new Date())
+
+  useEffect(() => {
+    const id = setInterval(() => setRemaining(target - new Date()), 1000)
+    return () => clearInterval(id)
+  }, [target])
 
   async function post(path, body) {
     const res = await fetch(BASE + path, {
@@ -52,6 +78,16 @@ export default function App() {
 
       <button id="auth-btn" data-awc-src="src/auth/login-widget.jsx" data-awc-const="AUTH_LABEL"
         style={{ fontSize: '1.1rem', padding: '0.6rem 1.2rem' }}>{AUTH_LABEL}</button>
+
+      <div id="grand-opening-banner" style={{
+        marginTop: '1.5rem', padding: '1rem 1.25rem', borderRadius: 8,
+        background: '#eef4ff', border: '1px solid #cdddff', color: '#1f6feb',
+      }}>
+        <div style={{ fontSize: '1.15rem', fontWeight: 600 }}>Grand Opening this Saturday</div>
+        <div style={{ marginTop: '0.35rem', fontSize: '1.6rem', fontVariantNumeric: 'tabular-nums', color: '#0b3d91' }}>
+          {formatCountdown(remaining)}
+        </div>
+      </div>
 
       <p style={{ marginTop: '1.5rem', color: '#555' }}>
         Pick an element and propose a change. It edits live (HMR) with NO PR yet. Iterate by
