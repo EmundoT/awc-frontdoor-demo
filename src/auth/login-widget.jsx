@@ -1,2 +1,2 @@
 // A small experiment.
-export const AUTH_LABEL = 'Sign in v0'
+export const AUTH_LABEL = 'Enter Securely v1'
