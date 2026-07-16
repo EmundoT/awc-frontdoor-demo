@@ -5,7 +5,7 @@ import { AUTH_LABEL } from './auth/login-widget.jsx'
 const HEADLINE = 'Welcome to our Grand Opening'
 const BASE = 'http://localhost:8788'
 
-export default function App() {
+export default default function App() {
   const [status, setStatus] = useState('Pick an element (top-right), then propose a change.')
   const [staged, setStaged] = useState(false)   // a draft is staged (proposed, not yet accepted)
 
