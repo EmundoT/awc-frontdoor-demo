@@ -36,7 +36,7 @@ export default function App() {
     window.__awcBridge = true
     window.addEventListener('awc:change-request', async (ev) => {
       const req = ev.detail
-      setStatus(`Proposing on ${req['const']}... (headless CC edits live; NO PR yet -- you sign off first)`)
+      setStatus(`Proposing on ${req.const}... (headless CC edits live; NO PR yet -- you sign off first)`)
       const { ok, body } = await post('/propose', req)
       if (!ok) { setStatus(`propose failed: ${body.message || 'error'}`); return }
       setStaged(true)
